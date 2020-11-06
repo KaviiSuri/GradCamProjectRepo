@@ -8,7 +8,8 @@ import copy
 import time
 from datetime import datetime
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 
 
 def imshow(inp, title=None, alpha=1, map=None):
@@ -18,6 +19,7 @@ def imshow(inp, title=None, alpha=1, map=None):
     std = np.array([0.27236816, 0.22500427, 0.24329403])
     inp = std * inp + mean
     inp = np.clip(inp, 0, 1)
+    plt.switch_backend('Agg')
     plt.subplot(1, 2, 1)
     plt.imshow(inp)
     if map is not None:
@@ -26,7 +28,8 @@ def imshow(inp, title=None, alpha=1, map=None):
         plt.imshow(inp)
     if title is not None:
         plt.title(title)
-    plt.pause(0.001)  # pause a bit so that plots are updated
+    # plt.pause(0.001)  # pause a bit so that plots are updated
+    return plt.gcf()
 
 
 def set_parameter_requires_grad(model, num_freeze):
@@ -191,9 +194,10 @@ def gradcam(model, image, hook_layer=None):
     # inference and gradient calculation
     model.eval()
     with torch.enable_grad():
-        pred = torch.max(model(image.unsqueeze(0).to(device)))
+        pred = torch.max(model(image.unsqueeze(0).to(device)), 1)
+    y = pred[1].item()
     model.zero_grad()
-    pred.backward()
+    pred[0].backward()
 
     # ReLU of the avg-pooled linear combination of channels of the output of hooked layer
     act_grad = hook.output[0]
@@ -205,6 +209,6 @@ def gradcam(model, image, hook_layer=None):
     map = zoom(map.cpu(), (224 // map.shape[0], 224 // map.shape[0]), order=1)
 
     # plotting heatmap and image
-    imshow(image, alpha=0.3, map=map)
+    fig = imshow(image, alpha=0.3, map=map)
 
-    return map
+    return y, map, fig
