@@ -5,6 +5,7 @@ click==7.1.2
 cycler==0.10.0
 decorator==4.4.2
 Flask==1.1.2
+gunicorn==20.0.4
 ipython @ file:///tmp/build/80754af9/ipython_1598883821407/work
 ipython-genutils==0.2.0
 itsdangerous==1.1.0
