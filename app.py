@@ -27,6 +27,13 @@ prediction_content = [{
     'desc': 'Melanoma is a malignant neoplasm derived from melanocytes that may appear in different variants. If excised in an early stage it can be cured by simple surgical excision. Melanomas can be invasive or non-invasive (in situ). We included all variants of melanoma including melanoma in situ, but did exclude non-pigmented, subungual, ocular or mucosal melanoma.'
 }]
 
+# Load Model
+model_ft = models.vgg19_bn()
+num_ftrs = model_ft.classifier[6].in_features
+model_ft.classifier[6] = torch.nn.Linear(num_ftrs, 3)
+model_ft.load_state_dict(torch.load(
+    './best_model_vgg19.pt', map_location=torch.device('cpu')))
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -52,10 +59,6 @@ def result():
         tensor = data_transforms['test'](img)  # .unsqueeze(0)
         print('image preprocessed')
         # Instantiate and Load model
-        model_ft = models.vgg19_bn()
-        num_ftrs = model_ft.classifier[6].in_features
-        model_ft.classifier[6] = torch.nn.Linear(num_ftrs, 3)
-        model_ft.load_state_dict(torch.load('./best_model_vgg19.pt', map_location=torch.device('cpu')))
         print('model loaded')
         # Inference
         pred, heatmap, fig = gradcam(model_ft, tensor)
