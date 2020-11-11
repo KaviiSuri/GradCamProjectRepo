@@ -51,7 +51,7 @@ def result():
         model_ft = models.vgg19_bn()
         num_ftrs = model_ft.classifier[6].in_features
         model_ft.classifier[6] = torch.nn.Linear(num_ftrs, 3)
-        model_ft.load_state_dict(torch.load('./best_model_vgg19.pt'), map_location=torch.device('cpu'))
+        model_ft.load_state_dict(torch.load('./best_model_vgg19.pt'), map_location=map_location={'cuda:0': 'cpu'})
         # Inference
         pred, heatmap, fig = gradcam(model_ft, tensor)
         # Print the fig to a BytesIO object
