@@ -40,34 +40,41 @@ def allowed_file(filename):
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
+    print('request recieved')
     if 'photo' in request.files and allowed_file(request.files['photo'].filename):
         # Get The File into bytes and convert into PIL Image
         file = request.files['photo']
+        print('image recieved')
         img_bytes = file.read()
         img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
+        print('image read')
         # Convert image to tensor
         tensor = data_transforms['test'](img)  # .unsqueeze(0)
+        print('image preprocessed')
         # Instantiate and Load model
         model_ft = models.vgg19_bn()
         num_ftrs = model_ft.classifier[6].in_features
         model_ft.classifier[6] = torch.nn.Linear(num_ftrs, 3)
-        model_ft.load_state_dict(torch.load('./best_model_vgg19.pt'), map_location=map_location={'cuda:0': 'cpu'})
+        model_ft.load_state_dict(torch.load('./best_model_vgg19.pt', map_location=torch.device('cpu')))
+        print('model loaded')
         # Inference
         pred, heatmap, fig = gradcam(model_ft, tensor)
+        print('infrence generated')
         # Print the fig to a BytesIO object
         pngImage = io.BytesIO()
         FigureCanvas(fig).print_png(pngImage)
-
+        print('converted gradcam to image')
         # Encode PNG image to base64 string
         pngImageB64String = "data:image/png;base64,"
         pngImageB64String += base64.b64encode(
             pngImage.getvalue()).decode('utf8')
         # print(pngImageB64String)
+        print('encoded to base64')
         return render_template('result.html', image=pngImageB64String, content=prediction_content[pred])
 
     else:
         return redirect('/')
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
