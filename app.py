@@ -1,13 +1,11 @@
 from flask import Flask, render_template, redirect
 from flask.globals import request
 
-from SkinMnistDataset import data_transforms
-from utils import gradcam
+from utils import predict
 
 from PIL import Image
 import io
-import base64
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import os
 
 from torchvision import models
 import torch
@@ -51,32 +49,24 @@ def result():
     if 'photo' in request.files and allowed_file(request.files['photo'].filename):
         # Get The File into bytes and convert into PIL Image
         file = request.files['photo']
-        print('image recieved')
         img_bytes = file.read()
         img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
-        print('image read')
-        # Convert image to tensor
-        tensor = data_transforms['test'](img)  # .unsqueeze(0)
-        print('image preprocessed')
-        # Instantiate and Load model
-        print('model loaded')
-        # Inference
-        pred, heatmap, fig = gradcam(model_ft, tensor)
-        print('infrence generated')
-        # Print the fig to a BytesIO object
-        pngImage = io.BytesIO()
-        FigureCanvas(fig).print_png(pngImage)
-        print('converted gradcam to image')
-        # Encode PNG image to base64 string
-        pngImageB64String = "data:image/png;base64,"
-        pngImageB64String += base64.b64encode(
-            pngImage.getvalue()).decode('utf8')
-        # print(pngImageB64String)
-        print('encoded to base64')
+        pred, pngImageB64String = predict(img, model_ft)
         return render_template('result.html', image=pngImageB64String, content=prediction_content[pred])
 
     else:
         return redirect('/')
+
+
+@app.route('/demo/<number>', methods=['GET'])
+def demo(number):
+    filename = f'./static/demo/{number}.png'
+    if os.path.exists(filename):
+        img = Image.open(filename).convert('RGB')
+        pred, pngImageB64String = predict(img, model_ft)
+        return render_template('result.html', image=pngImageB64String, content=prediction_content[pred])
+    else:
+        return 'no such file'
 
 
 if __name__ == '__main__':

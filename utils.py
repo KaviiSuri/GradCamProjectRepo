@@ -7,6 +7,10 @@ import os
 import copy
 import time
 from datetime import datetime
+from SkinMnistDataset import data_transforms
+import base64
+import io
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 # torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 device = "cpu"
@@ -212,3 +216,18 @@ def gradcam(model, image, hook_layer=None):
     fig = imshow(image, alpha=0.3, map=map)
 
     return y, map, fig
+
+
+def predict(img, model_ft):
+    # Convert image to tensor
+    tensor = data_transforms['test'](img)  # .unsqueeze(0)
+    # Inference
+    pred, heatmap, fig = gradcam(model_ft, tensor)
+    # Print the fig to a BytesIO object
+    pngImage = io.BytesIO()
+    FigureCanvas(fig).print_png(pngImage)
+    # Encode PNG image to base64 string
+    pngImageB64String = "data:image/png;base64,"
+    pngImageB64String += base64.b64encode(
+        pngImage.getvalue()).decode('utf8')
+    return pred, pngImageB64String
