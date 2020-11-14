@@ -60,7 +60,7 @@ def result():
 
 @app.route('/demo/<number>', methods=['GET'])
 def demo(number):
-    filename = f'./static/demo/{number}.png'
+    filename = f'./static/demo/{number}.jpg'
     if os.path.exists(filename):
         img = Image.open(filename).convert('RGB')
         pred, pngImageB64String = predict(img, model_ft)
