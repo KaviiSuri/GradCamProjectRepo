@@ -9,15 +9,32 @@
 <div class="orange-bar"></div>
 <div class="black-bar"></div>
 <p class="description">
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam rerum atque
-  optio quam exercitationem doloribus ex tempore alias distinctio deserunt
-  corporis eaque facere mollitia minima sequi, vero quas perspiciatis odio?
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam rerum atque
-  optio quam exercitationem doloribus ex tempore alias distinctio deserunt
-  corporis eaque facere mollitia minima sequi, vero quas perspiciatis odio?
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam rerum atque
-  optio quam exercitationem doloribus ex tempore alias distinctio deserunt
-  corporis eaque facere mollitia minima sequi, vero quas perspiciatis odio?
+  <span class="heading"> Need of this project? </span>
+  Although neural networks prove to be useful, especially in such tasks of
+  health-care sector, the “WHY” of their functionality is a mystery to a great
+  extent. Techniques like Grad-CAM offer a chance to peek into the “black-box”
+  and gain insights around the inner workings of these models. It not only
+  serves as a validation as to whether the CNN is picking up on the right
+  features contributing to the produced result, but may also turn out to provide
+  intuitions about the features that the human-counterpart should consider while
+  making judgements.
+  <span class="heading"> What is this page and project about? </span>
+  This page is an effort towards the interpretability of Convolution Neural
+  Networks through Grad-CAMs. In this project, we trained a transfer-learned
+  image classifier to classify them according to the most likely skin-disease
+  the image might correspond to. Further, by manifesting the technique of
+  Grad-CAMs on feature-maps, the results (using heat-maps) for some sample
+  images are shown here. One can also test their own images on the classifier
+  and produce the respective Grad-CAMs by submitting the images below.
+  <span class="heading"> What is Grad-CAM? </span>
+  Gradient-weighted Class Activation Mapping (Grad-CAM), uses the gradients of
+  any target concept, flowing into the final convolutional layer to produce a
+  coarse localization map highlighting important regions in the image for
+  predicting the concept. This technique is referred from the paper
+  <a id="paper-link" href="https://arxiv.org/abs/1610.02391"
+    >Grad-CAM: Visual Explanations from Deep Networks via Gradient-based
+    Localization (7 Oct 2016)
+  </a>
 </p>
 <!-- 
     <a href="#" class='icon-scroll'>

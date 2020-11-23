@@ -23,8 +23,7 @@ h1 {
 
 .description {
   width: 58vw;
-  font-weight: 600;
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 img.branch {
@@ -194,4 +193,17 @@ form.photo-form button {
     -webkit-transform: translateY(46px);
     transform: translateY(46px);
   }
+}
+
+span.heading {
+  display: block;
+  font-size: 1.4em;
+  margin-top: 1em;
+  font-weight: 600;
+}
+
+#paper-link {
+  text-decoration: underline;
+  color: #ff7a00;
+  font-weight: 700;
 }

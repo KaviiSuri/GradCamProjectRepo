@@ -1,6 +1,6 @@
 .content {
   display: grid;
-  grid-template-areas: "heading heading img" "para para para";
+  grid-template-areas: "img" "heading" "para";
   gap: 3em;
 
   align-items: center;
@@ -17,6 +17,7 @@ h1 {
 img.heatmap {
   grid-area: img;
   top: 70vh;
+  z-index: -1;
 }
 
 p.desc {
@@ -38,6 +39,7 @@ img.branch {
 #heatmap {
   width: 100%;
   min-width: 340px;
+  z-index: -1;
 }
 
 @media (max-width: 600px) {
@@ -46,7 +48,7 @@ img.branch {
   }
 
   .content {
-    grid-template-areas: "heading" "img" "para";
+    grid-template-areas: "img" "heading" "para";
   }
 
   #heatmap {
