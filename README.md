@@ -1,7 +1,7 @@
 # Grad-CAM for the skin-mnist dataset for skin lesion diagnosis
 
-`This projects is currently under development and relevant scripts are yet to be added`  
 This project uses a convnet model for detection of skin lesion detection and uses Grad-CAM for explaing the prediction of the model.
+**[Live Demo](http://139.59.10.180/)**
 
 ## Data
 ---
@@ -37,9 +37,9 @@ We used transfer learning on different models and selected `Final Model` accordi
 - [x] Converting the .ipynb file into scripts to push into the repo
 
 ### Phase 3 - Grad-CAM
-- [ ] Reading and understanding the details about Grad-CAM from the paper.
-- [ ] Implementing inference method with built in Grad-CAM
+- [x] Reading and understanding the details about Grad-CAM from the paper.
+- [x] Implementing inference method with built in Grad-CAM
 
 ### Phase 4 - Deployment
-- [ ] Write a web app in flask for deploying the model to make it more accessible
-- [ ] Deplow the web app along with the model files online 
+- [x] Write a web app in flask for deploying the model to make it more accessible
+- [x] Deplow the web app along with the model files online 
